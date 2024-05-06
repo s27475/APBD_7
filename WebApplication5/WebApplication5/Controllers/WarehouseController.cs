@@ -49,12 +49,10 @@ public class WarehouseController : ControllerBase
         await _warehouseService.InsertToPW(product, orderId);
 
         int pk = await _warehouseService.GetPrimaryKey(product, orderId);
-
         if (pk == 0)
         {
             return NotFound("Nie mozna znalezc danego zamowienia");
         }
-
         return Ok($"Klucz glowny do tego zamowienia to: {pk}");
 
     }

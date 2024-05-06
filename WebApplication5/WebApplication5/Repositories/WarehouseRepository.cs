@@ -23,7 +23,6 @@ public class WarehouseRepository : IWarehouseRepository
         {
             return true;
         }
-
         return false;
     }
 
@@ -39,7 +38,6 @@ public class WarehouseRepository : IWarehouseRepository
         {
             return true;
         }
-
         return false;
     }
 
@@ -58,7 +56,6 @@ public class WarehouseRepository : IWarehouseRepository
         {
             return (int)result;
         }
-
         return Int32.MaxValue;
     }
 
@@ -74,7 +71,6 @@ public class WarehouseRepository : IWarehouseRepository
         {
             return false;
         }
-
         return true;
     }
 
@@ -87,7 +83,6 @@ public class WarehouseRepository : IWarehouseRepository
         cmd.CommandText = "UPDATE [Order] SET FulfilledAt = @currdate WHERE IdOrder = @orderId";
         cmd.Parameters.AddWithValue("@currdate", DateTime.Now);
         cmd.Parameters.AddWithValue("@orderId", orderId);
-
         return await cmd.ExecuteNonQueryAsync();
     }
 
@@ -99,10 +94,10 @@ public class WarehouseRepository : IWarehouseRepository
         cmd.Connection = con;
         cmd.CommandText = "SELECT Price FROM Product WHERE IdProduct = @idProduct";
         cmd.Parameters.AddWithValue("@idProduct", idProduct);
-        var resault = await cmd.ExecuteScalarAsync();
-        if (resault is not null)
+        var result = await cmd.ExecuteScalarAsync();
+        if (result is not null)
         {
-            return (decimal)resault;
+            return (decimal)result;
         }
         return 0;
     }
@@ -122,8 +117,6 @@ public class WarehouseRepository : IWarehouseRepository
         cmd.Parameters.AddWithValue("@amount", product.Amount);
         cmd.Parameters.AddWithValue("@price", price);
         cmd.Parameters.AddWithValue("@createdAt", product.CreatedAt);
-
-
         return await cmd.ExecuteNonQueryAsync();
     }
 
@@ -131,17 +124,16 @@ public class WarehouseRepository : IWarehouseRepository
     {
         await using var con = new SqlConnection(_configuration["ConnectionStrings:Default"]);
         await con.OpenAsync();
-
         await using var cmd = new SqlCommand();
         cmd.Connection = con;
         cmd.CommandText = "SELECT IdProductWarehouse FROM Product_Warehouse WHERE IdWarehouse = @warehouseId AND IdProduct = @idProduct AND IdOrder = @orderId";
         cmd.Parameters.AddWithValue("@warehouseId", product.IdWarehouse);
         cmd.Parameters.AddWithValue("@idProduct", product.IdProduct);
         cmd.Parameters.AddWithValue("@orderId", orderId);
-        var resault = await cmd.ExecuteScalarAsync();
-        if (resault is not null)
+        var result = await cmd.ExecuteScalarAsync();
+        if (result is not null)
         {
-            return (int)resault;
+            return (int)result;
         }
         return 0;
     }
